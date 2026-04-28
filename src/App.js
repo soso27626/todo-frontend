@@ -49,6 +49,7 @@ function App() {
         <input
           value={newTitle}
           onChange={e => setNewTitle(e.target.value)}
+          onKeyDown = {e => e.key === "Enter" && addTodo()}
           placeholder="Add a new todo"
         />
         <button onClick={addTodo}>Add</button>
