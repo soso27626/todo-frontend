@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import './App.css';
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -42,14 +43,16 @@ function App() {
 };
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div className ="container" >
       <h1>Todo List</h1>
-      <input
-        value={newTitle}
-        onChange={e => setNewTitle(e.target.value)}
-        placeholder="Add a new todo"
-      />
-      <button onClick={addTodo}>Add</button>
+      <div className = "input-row"> 
+        <input
+          value={newTitle}
+          onChange={e => setNewTitle(e.target.value)}
+          placeholder="Add a new todo"
+        />
+        <button onClick={addTodo}>Add</button>
+      </div>
       <ul>
         {todos.map(todo => (
           <li key={todo.id}>
