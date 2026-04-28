@@ -29,6 +29,18 @@ function App() {
       .then(() => setTodos(todos.filter(t => t.id !== id)));
   };
 
+  const toggleTodo = (todo) => {
+  fetch(`http://localhost:5120/todos/${todo.id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title: todo.title, isComplete: !todo.isComplete })
+  })
+    .then(res => res.json())
+    .then(updated => {
+      setTodos(todos.map(t => t.id === updated.id ? updated : t));
+    });
+};
+
   return (
     <div style={{ padding: '20px' }}>
       <h1>Todo List</h1>
@@ -41,9 +53,17 @@ function App() {
       <ul>
         {todos.map(todo => (
           <li key={todo.id}>
-            {todo.title}
+            <input
+              type="checkbox"
+              checked={todo.isComplete}
+              onChange={() => toggleTodo(todo)}
+            />
+            <span style={{ textDecoration: todo.isComplete ? 'line-through' : 'none' }}>
+              {todo.title}
+            </span>
             <button onClick={() => deleteTodo(todo.id)}>Delete</button>
           </li>
+
         ))}
       </ul>
     </div>
