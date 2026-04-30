@@ -4,6 +4,8 @@ import './App.css';
 function App() {
   const [todos, setTodos] = useState([]);
   const [newTitle, setNewTitle] = useState('');
+  const [deadline, setDeadline] = useState('');
+
 
   useEffect(() => {
     fetch('http://localhost:5120/todos')
@@ -16,7 +18,7 @@ function App() {
     fetch('http://localhost:5120/todos', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: newTitle, isComplete: false })
+      body: JSON.stringify({ title: newTitle, isComplete: false, deadline: deadline || null })
     })
       .then(res => res.json())
       .then(todo => {
@@ -52,18 +54,33 @@ function App() {
           onKeyDown = {e => e.key === "Enter" && addTodo()}
           placeholder="Add a new todo"
         />
+        <input 
+        type="date"
+        value={deadline}
+        onChange = {e =>setDeadline(e.target.value)}
+        style = {{colorScheme: 'light'}}
+        />
         <button onClick={addTodo}>Add</button>
       </div>
       <ul>
-        {todos.map(todo => (
+        {[...todos].sort((a, b) => {
+          if (!a.deadline) return 1;
+          if (!b.deadline) return -1;
+          return new Date(a.deadline) - new Date(b.deadline);
+        }).map(todo => (
           <li key={todo.id}>
             <input
               type="checkbox"
               checked={todo.isComplete}
               onChange={() => toggleTodo(todo)}
             />
-            <span style={{ textDecoration: todo.isComplete ? 'line-through' : 'none' }}>
+            <span style={{textDecoration: todo.isComplete ? 'line-through' : 'none',color: !todo.isComplete && todo.deadline && new Date(todo.deadline) < new Date() ? 'red' : 'black'}}>
               {todo.title}
+              {todo.deadline && (
+                <small style={{ color: '#888', marginLeft: '8px' }}>
+                  Due: {new Date(todo.deadline).toLocaleDateString('en-NZ')}
+                </small>
+              )}
             </span>
             <button onClick={() => deleteTodo(todo.id)}>Delete</button>
           </li>
