@@ -10,7 +10,7 @@ body {
 }
 
 .container {
-  max-width: 500px;
+  max-width: 700px;
   margin: 60px auto;
   background: white;
   padding: 30px;
@@ -25,6 +25,7 @@ h1 {
 
 .input-row {
   display: flex;
+  flex-wrap:wrap;
   gap: 10px;
   margin-bottom: 20px;
 }
@@ -62,6 +63,7 @@ li {
 li span {
   flex: 1;
   font-size: 16px;
+  word-break: break-word;
 }
 
 li button {

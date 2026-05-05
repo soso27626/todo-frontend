@@ -5,6 +5,8 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [newTitle, setNewTitle] = useState('');
   const [deadline, setDeadline] = useState('');
+  const [recurrence, setRecurrence] = useState('');
+
 
 
   useEffect(() => {
@@ -18,7 +20,12 @@ function App() {
     fetch('http://localhost:5120/todos', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: newTitle, isComplete: false, deadline: deadline || null })
+      body: JSON.stringify({ 
+        title: newTitle, 
+        isComplete: false, 
+        deadline: deadline || null,
+        recurrence: recurrence || null
+      })
     })
       .then(res => res.json())
       .then(todo => {
@@ -55,11 +62,21 @@ function App() {
           placeholder="Add a new todo"
         />
         <input 
-        type="date"
-        value={deadline}
-        onChange = {e =>setDeadline(e.target.value)}
-        style = {{colorScheme: 'light'}}
+          type="date"
+          value={deadline}
+          onChange = {e =>setDeadline(e.target.value)}
+          style = {{colorScheme: 'light'}}
         />
+        <select
+          value={recurrence}
+          onChange={e => setRecurrence(e.target.value)}
+        >
+          <option value="">One Time</option>
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="biweekly">Every Two Weekly</option>
+          <option value="yearly">Yearly</option>
+        </select>
         <button onClick={addTodo}>Add</button>
       </div>
       <ul>
