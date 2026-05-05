@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
 import './App.css';
+import Journal from './Journal';
+
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [newTitle, setNewTitle] = useState('');
   const [deadline, setDeadline] = useState('');
   const [recurrence, setRecurrence] = useState('');
+  const [showJournal, setShowJournal] = useState(false);
+
 
 
 
@@ -50,10 +54,16 @@ function App() {
       setTodos(todos.map(t => t.id === updated.id ? updated : t));
     });
 };
+if (showJournal) {
+  return <Journal onBack={() => setShowJournal(false)} />;
+}
 
-  return (
-    <div className ="container" >
+return (
+  <div className="container">
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <h1>Todo List</h1>
+      <button onClick={() => setShowJournal(true)} style={{ padding: '8px 16px', cursor: 'pointer' }}>📔 Journal</button>
+      </div>
       <div className = "input-row"> 
         <input
           value={newTitle}
